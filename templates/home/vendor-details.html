@@ -1,0 +1,400 @@
+{% extends 'inc/base.html' %}
+
+{% load static %}
+
+{% block title %} HelpBazar | Vendor - {{ vendor.title }} {% endblock title %}
+
+{% block content %}
+    <main class="main">
+        <div class="page-header mt-30 mb-50">
+            <div class="container">
+                <div class="archive-header">
+                    <div class="row align-items-center">
+                        <div class="col-xl-3">
+                            <h1 class="mb-15">{{ vendor.title }}</h1>
+                            <div class="breadcrumb">
+                                <a href="{% url 'index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                                <span></span> <a href="{% url 'home_brand' %}">Vendor</a> <span></span> {{ vendor.title }}
+                            </div>
+                        </div>
+                        <div class="col-xl-9 text-end d-none d-xl-block">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container mb-30">
+            <div class="row flex-row-reverse">
+                <div class="col-lg-4-5">
+                    <div class="shop-product-fillter">
+                        <div class="totall-product">
+                            <p>We found <strong class="text-brand">{{ vendor.vendor.count }}</strong> item{{ vendor.vendor.count | pluralize }} for you!</p>
+                        </div>
+                        <div class="sort-by-product-area">
+                            <div class="sort-by-cover mr-10">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fi-rs-apps"></i>Show:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">50</a></li>
+                                        <li><a href="#">100</a></li>
+                                        <li><a href="#">150</a></li>
+                                        <li><a href="#">200</a></li>
+                                        <li><a href="#">All</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="sort-by-cover">
+                                <div class="sort-by-product-wrap">
+                                    <div class="sort-by">
+                                        <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                    </div>
+                                    <div class="sort-by-dropdown-wrap">
+                                        <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                    </div>
+                                </div>
+                                <div class="sort-by-dropdown">
+                                    <ul>
+                                        <li><a class="active" href="#">Featured</a></li>
+                                        <li><a href="#">Price: Low to High</a></li>
+                                        <li><a href="#">Price: High to Low</a></li>
+                                        <li><a href="#">Release Date</a></li>
+                                        <li><a href="#">Avg. Rating</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row product-grid">
+                        {% for product in page %}
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                        <div class="product-cart-wrap mb-30">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <a href="shop-product-right.html">
+                                        <img class="default-img" src="{{ product.image.url }}" alt="" />
+                                        <img class="hover-img" src="{{ product.hover_image.url }}" alt="" />
+                                    </a>
+                                </div>
+                                <div class="product-action-1">
+                                    <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' product.id %}"><i class="fi-rs-heart"></i></a>
+                                    <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                    <a aria-label="Quick view" class="action-btn" data-bs-toggle="modal" data-bs-target="#quickViewModal-{{ product.slug }}"><i class="fi-rs-eye"></i></a>
+                                </div>
+                                {% if product.sale_price %}
+                                    <div class="">
+                                        {% if product.discount == 'flat' %}
+                                            <span class="hot" style="
+                                                background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                                border-radius: 0;
+                                                color: #fff;
+                                                font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                                font-size: 17px;
+                                                line-height: 25px;
+                                                height: 80px;
+                                                padding: 15px;
+                                                position: absolute;
+                                                right: 2px;
+                                                text-align: center;
+                                                text-transform: capitalize;
+                                                top: 0;
+                                                z-index: 2;
+                                                width: 80px;">Tk {{ product.sale_price|floatformat:0 }} Off
+                                            </span>
+                                        {% else %}
+                                            <span class="hot" style="
+                                                background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                                border-radius: 0;
+                                                color: #fff;
+                                                font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                                font-size: 17px;
+                                                line-height: 25px;
+                                                height: 80px;
+                                                padding: 15px;
+                                                position: absolute;
+                                                right: 2px;
+                                                text-align: center;
+                                                text-transform: capitalize;
+                                                top: 0;
+                                                z-index: 2;
+                                                width: 80px;">{{ product.sale_price|floatformat:0 }} % Off
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                {% elif product.offer == 'buy1get1' %}
+                                    <div class="">
+                                        <span class="hot" style="
+                                            background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                            border-radius: 0;
+                                            color: #fff;
+                                            font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                            font-size: 17px;
+                                            line-height: 25px;
+                                            height: 80px;
+                                            padding: 15px;
+                                            position: absolute;
+                                            right: 2px;
+                                            text-align: center;
+                                            text-transform: capitalize;
+                                            top: 0;
+                                            z-index: 2;
+                                            width: 80px;">Buy 1 <br> Get 1
+                                    </span>
+                                    </div>
+                                {% elif product.offer == 'today_deal' %}
+                                    <div class="">
+                                        <span class="hot" style="
+                                            background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                            border-radius: 0;
+                                            color: #fff;
+                                            font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                            font-size: 17px;
+                                            line-height: 25px;
+                                            height: 80px;
+                                            padding: 15px;
+                                            position: absolute;
+                                            right: 2px;
+                                            text-align: center;
+                                            text-transform: capitalize;
+                                            top: 0;
+                                            z-index: 2;
+                                            width: 80px;">Today's<br>Deal
+                                        </span>
+                                    </div>
+                                {% elif product.offer == 'Savings' %}
+                                    <div class="">
+                                        <span class="hot" style="
+                                            background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                            border-radius: 0;
+                                            color: #fff;
+                                            font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                            font-size: 17px;
+                                            line-height: 25px;
+                                            height: 80px;
+                                            padding: 15px;
+                                            position: absolute;
+                                            right: 2px;
+                                            text-align: center;
+                                            text-transform: capitalize;
+                                            top: 0;
+                                            z-index: 2;
+                                            width: 80px;">Grate<br>Saving
+                                        </span>
+                                    </div>
+                                {% else %}
+
+                                {% endif %}
+                            </div>
+                            <div class="product-content-wrap">
+                                <div class="product-category">
+                                    <a href="#">{{ product.category.title }}</a>
+                                </div>
+                                <h2><a href="{% url 'product_details' product.slug %}">{{ product.name|truncatechars:20  }}</a></h2>
+                                <div class="product-rate-cover">
+                                    <div class="product-rate d-inline-block">
+                                        <div class="product-rating" style="width: 90%"></div>
+                                    </div>
+                                    <span class="font-small ml-5 text-muted"> (4.0)</span>
+                                </div>
+                                <div>
+                                    {% if product.vendor %}
+                                        <span class="font-small text-muted">By
+                                            <a href="#">{{ product.vendor.title }}</a>
+                                        </span>
+                                    {% elif product.brand %}
+                                        <span class="font-small text-muted">By
+                                            <a href="#">{{ product.brand.title }}</a>
+                                        </span>
+                                    {% else %}
+                                        <br>
+                                    {% endif %}
+                                </div>
+                                <div class="product-card-bottom">
+                                    <div class="product-price mt-10">
+                                        <span>
+                                            {% for c in currencies %}
+                                                {{ c.symbol }}
+                                            {% endfor %}
+                                            {{ product.current_price }}
+                                        </span>
+                                        {% if product.old_price %}
+                                        <br>
+                                        <span class="old-price">
+                                            {% for c in currencies %}
+                                                {{ c.symbol }}
+                                            {% endfor %}
+                                            {{ product.previous_price }}
+                                        </span>
+                                        {% else %}
+                                        <br><br>
+                                        {% endif %}
+                                    </div>
+                                    <div class="add-cart">
+                                        {% if product.old_price %}
+                                        <br>
+                                        {% endif %}
+                                        {% if product.qty == 0 %}
+                                        <a class="add disabled_link" href="{% url 'add_to_cart' product.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        {% else %}
+                                        <a class="add" href="{% url 'add_to_cart' product.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    </div>
+                    <!--product grid-->
+                    <div class="pagination-area">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center">
+                                {% if page.has_previous %}
+                                <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page.previous_page_number }}"><</a>
+                                </li>
+                                {% endif %}
+
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page.number }}">{{ page.number }}</a>
+                                </li>
+
+                                {% if page.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page.next_page_number }}">></a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page.paginator.num_pages }}">&raquo;</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-1-5 primary-sidebar sticky-sidebar">
+                    <div class="sidebar-widget widget-store-info mb-30 bg-3 border-0">
+                        <div class="vendor-logo mb-30">
+                            <img src="{{ vendor.image.url }}" alt="" />
+                        </div>
+                        <div class="vendor-info">
+                            <div class="product-category">
+                                <span class="text-muted">Since {{ vendor.created_at | date:'Y' }}</span>
+                            </div>
+                            <h4 class="mb-5"><a href="{% url 'home_vendor_details' vendor.slug %}" class="text-heading">{{ vendor.title }}</a></h4>
+                            <div class="product-rate-cover mb-15">
+                                <div class="product-rate d-inline-block">
+                                    <div class="product-rating" style="width: 90%"></div>
+                                </div>
+                                <span class="font-small ml-5 text-muted"> (4.0)</span>
+                            </div>
+                            <div class="vendor-des mb-30" style="text-align: justify;">
+                                <p class="font-sm text-heading">{{ vendor.description | safe }}</p>
+                            </div>
+                            <div class="follow-social mb-20">
+                                <h6 class="mb-15">Follow Us</h6>
+                                <ul class="social-network">
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="{% static 'assets/imgs/theme/icons/social-tw.svg' %}" alt="" />
+                                        </a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="{% static 'assets/imgs/theme/icons/social-fb.svg' %}" alt="" />
+                                        </a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="{% static 'assets/imgs/theme/icons/social-insta.svg' %}" alt="" />
+                                        </a>
+                                    </li>
+                                    <li class="hover-up">
+                                        <a href="#">
+                                            <img src="{% static 'assets/imgs/theme/icons/social-pin.svg' %}" alt="" />
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="vendor-info">
+                                <ul class="font-sm mb-20">
+                                    <li>
+                                        <img class="mr-5" src="{% static 'assets/imgs/theme/icons/icon-location.svg' %}" alt="" />
+                                        <strong>Address: </strong>
+                                        <span>{{ vendor.address }}</span>
+                                    </li>
+                                    <li>
+                                        <img class="mr-5" src="{% static 'assets/imgs/theme/icons/icon-contact.svg' %}" alt="" />
+                                        <strong>Call Us:</strong>
+                                        <span>{{ vendor.contact }}</span>
+                                    </li>
+                                </ul>
+                                <a href="#" class="btn btn-xs">Contact Seller <i class="fi-rs-arrow-small-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-widget widget-category-2 mb-30">
+                        <h5 class="section-title style-1 mb-30">Category</h5>
+                        <ul>
+                            {% for cat in categories %}
+                            <li>
+                                <a href="{% url 'category_product_list' cat.slug %}">
+                                    <img src="{{ cat.icon.url }}" alt="" />{{ cat.title }}
+                                </a>
+                                <span class="count">{{ cat.category.count }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="sidebar-widget price_range range mb-30">
+                    <h5 class="section-title style-1 mb-30">Fill by price</h5>
+                    <div class="price-filter">
+                        <div class="price-filter-inner">
+                            <input type="range" id="range" class="slider-range" min="" max="" value="" oninput="">
+                            <div class="d-flex justify-content-between">
+                                <div class="caption">From: <strong id="slider-range-value1" class="text-brand"></strong></div>
+                                <div class="caption">To: <strong id="slider-range-value2" class="text-brand"></strong></div>
+                            </div>
+                            <input type="number" id="max_price" min="" max="" value="" placeholder="Current Price" onkeyup="" style="background: transparent !important;">
+                        </div>
+                    </div>
+                    <div class="list-group">
+                        <div class="list-group-item mb-10 mt-10">
+                            <label class="fw-900">Color</label>
+                            <div class="custome-checkbox">
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="" />
+                                <label class="form-check-label" for="exampleCheckbox1"><span>Red (56)</span></label>
+                                <br />
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox2" value="" />
+                                <label class="form-check-label" for="exampleCheckbox2"><span>Green (78)</span></label>
+                                <br />
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox3" value="" />
+                                <label class="form-check-label" for="exampleCheckbox3"><span>Blue (54)</span></label>
+                            </div>
+                            <label class="fw-900 mt-15">Item Condition</label>
+                            <div class="custome-checkbox">
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="" />
+                                <label class="form-check-label" for="exampleCheckbox11"><span>New (1506)</span></label>
+                                <br />
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox21" value="" />
+                                <label class="form-check-label" for="exampleCheckbox21"><span>Refurbished (27)</span></label>
+                                <br />
+                                <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox31" value="" />
+                                <label class="form-check-label" for="exampleCheckbox31"><span>Used (45)</span></label>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="shop-grid-right.html" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i> Fillter</a>
+                </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}

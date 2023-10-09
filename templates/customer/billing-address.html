@@ -1,0 +1,99 @@
+{% extends 'inc/base.html' %}
+{% load static %}
+{% load active_link_tags %}
+{% block title %} HelpBazar | Customer Address {% endblock title %}
+{% block content %}
+    <main class="main pages">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="{% url 'index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                    <span></span> My Account <span></span> My Address
+                </div>
+            </div>
+        </div>
+        <div class="page-content pt-150 pb-150">
+            <div class="container">
+                {% if messages %}
+                    {% for m in messages %}
+                        <div class="alert {{m.tags}}" id="alertMessage">
+                            <strong>{{ m }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="row">
+                    <div class="col-lg-10 m-auto">
+                        <div class="row">
+                            {% include 'customer/sidebar.html' %}
+                            <div class="col-md-9">
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="mb-0">Billing Address</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <form method="POST" action="{% url 'billing_address' %}">
+                                            {% csrf_token %}
+                                            <h4 class="mb-30">Billing Details</h4>
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.fname }}
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.lname }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.billing_address }}
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.billing_address2 }}
+                                                </div>
+                                            </div>
+                                            <div class="row shipping_calculator">
+                                                <div class="form-group col-lg-6">
+                                                    <div class="custom_select">
+                                                        <input id="country" type="text" name="country">
+                                                    </div>
+                                                    <div class="form-item" style="display:none;">
+                                                        <input type="text" id="country_code" name="country" data-countrycodeinput="1" readonly="readonly" placeholder="Selected country code will appear here"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.city }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.zipcode }}
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.phone }}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.cname }}
+                                                </div>
+                                                <div class="form-group col-lg-6">
+                                                    {{ billing_form.email }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group mb-30">
+                                                {{ billing_form.note }}
+                                            </div>
+                                            <div class="form-group mb-30">
+                                                <button type="submit" class="btn btn-primary">Save Billing Address</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock content %}

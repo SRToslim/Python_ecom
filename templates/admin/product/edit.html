@@ -1,0 +1,244 @@
+{% extends 'admin/inc/base.html' %}
+{% load static %}
+{% block title %} {% endblock %}
+{% block content %}
+<section class="content-main">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-12">
+                <div class="content-header">
+                    <h2 class="content-title">Add New Product</h2>
+                    <div>
+                        <a class="btn btn-light rounded font-sm mr-5 text-body hover-up" href="{% url 'product_list' %}">Back to Product List</a>
+                        <button class="btn btn-md rounded font-sm hover-up">Publish</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Basic</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-4">
+                            <label class="form-label">Product title</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Full description</label>
+                            <div id="editor"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Regular price</label>
+                                    <div class="row gx-2">
+                                        {{ form.price }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="mb-4">
+                                    <label class="form-label">Old price</label>
+                                    {{ form.old_price }}
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="form-label">Currency</label>
+                                <select class="form-select" name="currency">
+                                    {% for i in currencies %}
+                                    <option value="{{ i.name }}">{{ i.symbol }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Tax rate</label>
+                                    {{ form.tax }}
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Tax type</label>
+                                    {{ form.tax_type }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Shipping</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Unit</label>
+                                        {{ form.unit }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Pack Size</label>
+                                        {{ form.pack_size }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Minimum Quantity</label>
+                                        {{ form.min_qty }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label class="form-label">Barcode</label>
+                                        {{ form.barcode }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">SKU</label>
+                                        {{ form.sku }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="mb-4">
+                                        <label class="form-label">Quantity</label>
+                                        {{ form.qty }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Offer</label>
+                                        {{ form.offer }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Cash of Delivery</label>
+                                        {{ form.cod }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-4">
+                                        <label class="form-label">Featured</label>
+                                        {{ form.featured }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label class="form-label">Product Type</label>
+                                        {{ form.product_type }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="mb-4">
+                                        <label class="form-label">Product Status</label>
+                                        {{ form.status }}
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Image</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <img id="display-img" width="200" src=""/>
+                                    {{ form.image }}
+                                </div>
+                                <br>
+                                <div>
+                                    <p>Current Image</p>
+                                    <img src="{{ product.image.url }}" style="border-radius: 10px;" height="200">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Hover Image</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <img id="hoverImage" width="200" src=""/>
+                                    {{ form.hover_image }}
+                                </div>
+                                <br>
+                                <div>
+                                    <p>Current Image</p>
+                                    <img src="{{ product.hover_image.url }}" style="border-radius: 10px;" height="200">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- card end// -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Organization</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row gx-2">
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Category</label>
+                                {{ form.category }}
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Brand</label>
+                                {{ form.brand }}
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Vendor</label>
+                                {{ form.vendor }}
+                            </div>
+                            <div class="col-sm-6 mb-3">
+                                <label class="form-label">Location</label>
+                                {{ form.location }}
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label">Tags</label>
+                                {{ form.tags }}
+                            </div>
+                        </div>
+                        <!-- row.// -->
+                    </div>
+                </div>
+                <!-- card end// -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h4>Images</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row gx-2">
+                            <div class="col-sm-6 mb-3">
+                                <input type="file" name="images" multiple="multiple"/>
+                            </div>
+                        </div>
+                        <!-- row.// -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'inc/base.html' %}
+{% load static %}
+
+{% block title %} HelpBazar | {{ user.username }}'s Wishlist {% endblock title %}
+{% block content %}
+    <main class="main">
+        <div class="page-header breadcrumb-wrap">
+            <div class="container">
+                <div class="breadcrumb">
+                    <a href="/" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                    <span></span> {{ user.username }}'s <span></span> Wishlist
+                </div>
+            </div>
+        </div>
+        <div class="container mb-30 mt-50">
+            <div class="row">
+                <div class="col-xl-10 col-lg-12 m-auto">
+                    <div class="mb-50">
+                        <h1 class="heading-2 mb-10">Your Wishlist</h1>
+                        <h6 class="text-body">There are <span class="text-brand">{{ wishlist_item.count }}</span> product{{ wishlist_item.count | pluralize }} in this list</h6>
+                    </div>
+                    <div class="table-responsive shopping-summery">
+                        <table class="table table-wishlist">
+                            <thead>
+                                <tr class="main-heading">
+                                    <th class="custome-checkbox start pl-30">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox11" value="" />
+                                        <label class="form-check-label" for="exampleCheckbox11"></label>
+                                    </th>
+                                    <th scope="col" colspan="2">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Stock Status</th>
+                                    <th scope="col">Action</th>
+                                    <th scope="col" class="end">Remove</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in wishlist_item %}
+                                <tr class="pt-30">
+                                    <td class="custome-checkbox pl-30">
+                                        <input class="form-check-input" type="checkbox" name="checkbox" id="exampleCheckbox1" value="" />
+                                        <label class="form-check-label" for="exampleCheckbox1"></label>
+                                    </td>
+                                    <td class="image product-thumbnail pt-40"><img src="{{ item.product.image.url }}" alt="#" /></td>
+                                    <td class="product-des product-name">
+                                        <h6><a class="product-name mb-10" href="{% url 'product_details' item.product.slug %}">{{ item.product.name }}</a></h6>
+                                        <div class="product-rate-cover">
+                                            <span class="font-small text-muted">Code: {{ item.product.sku }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="price" data-title="Price">
+                                        <h3 class="text-brand">
+                                            {% for c in currencies %}
+                                                {{ c.symbol }}
+                                            {% endfor %}
+                                            {{ item.product.current_price }}
+                                        </h3>
+                                    </td>
+                                    <td class="text-center detail-info" data-title="Stock">
+                                        {{ item.product.product_availability }}
+                                    </td>
+                                    <td class="text-right" data-title="Cart">
+                                        <form method="post" action="{% url 'add_to_cart' item.product.id %}">
+                                            {% csrf_token %}
+                                            {% if item.product.qty == 0 %}
+                                            <button class="btn btn-sm" disabled>Add to cart</button>
+                                            {% else %}
+                                            <button class="btn btn-sm">Add to cart</button>
+                                            {% endif %}
+                                        </form>
+                                    </td>
+                                    <td class="action text-center" data-title="Remove">
+                                        <a href="{% url 'remove_from_wishlist' item.id %}" class="text-body"><i class="fi-rs-trash"></i></a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan=12 class="text-center">
+                                            <p style="font-size: 50px; font-weight: 600 !important; margin: 30px 0 !important;">Your wishlist is empty.</p>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

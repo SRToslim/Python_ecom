@@ -1,0 +1,13 @@
+django
+django-jazzmin
+pillow
+user_agents
+requests
+django-autoslug
+django-ckeditor
+django-taggit
+django-active-link
+django-sslserver
+pysslcmz
+fontawesomefree
+django-ipware

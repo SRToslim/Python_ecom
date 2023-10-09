@@ -1,0 +1,100 @@
+{% extends 'admin/inc/base.html' %}
+{% load static %}
+{% block title %} HelpBazar | All Product {% endblock %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">All Products</h2>
+        </div>
+        <div>
+            <a href="#" class="btn btn-light rounded font-md">Export</a>
+            <a href="{% url 'bulk_product_upload' %}" class="btn btn-light rounded font-md">Import</a>
+            <a href="{% url 'add_product' %}" class="btn btn-primary btn-sm rounded">Create new</a>
+        </div>
+    </div>
+    {% if messages %}
+        {% for m in messages %}
+            <div class="alert {{m.tags}}" id="alertMessage">
+                <strong>{{ m }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="card mb-4">
+        <header class="card-header">
+            <div class="row gx-3">
+                <div class="col-lg-4 col-md-6 me-auto">
+                    <input type="text" placeholder="Search..." class="form-control"/>
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>All category</option>
+                        {% for cat in categories %}
+                        <option>{{ cat.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2 col-6 col-md-3">
+                    <select class="form-select">
+                        <option>Latest added</option>
+                        <option>Cheap first</option>
+                        <option>Most viewed</option>
+                    </select>
+                </div>
+            </div>
+        </header>
+        <!-- card-header end// -->
+        <div class="card-body">
+            <div class="row gx-3 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 row-cols-xxl-5">
+                {% for product in page %}
+                <div class="col">
+                    <div class="card card-product-grid">
+                        <a href="{% url 'product_details' product.slug %}" class="img-wrap" target="_blank"> <img src="{{ product.image.url }}" alt="Product"/> </a>
+                        <div class="info-wrap">
+                            <a href="{% url 'product_details' product.slug %}" class="title text-truncate" target="_blank">{{ product.name }}</a>
+                            <div class="price mb-2">
+                                {% for c in currencies %}
+                                    {{ c.symbol }}
+                                {% endfor %}
+                                {{ product.current_price }}
+                            </div>
+                            <!-- price.// -->
+                            <a href="{% url 'edit_product' product.slug %}" class="btn btn-sm font-sm rounded btn-brand"> <i
+                                    class="material-icons md-edit"></i> Edit </a>
+                            <a href="{% url 'delete_product' product.slug %}" class="btn btn-sm font-sm btn-light rounded"> <i
+                                    class="material-icons md-delete_forever"></i> Delete </a>
+                        </div>
+                    </div>
+                    <!-- card-product  end// -->
+                </div>
+                {% endfor %}
+            </div>
+            <!-- row.// -->
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+    <div class="pagination-area">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}"><</a>
+                </li>
+                {% endif %}
+
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page.number }}">{{ page.number }}</a>
+                </li>
+
+                {% if page.has_next %}
+                <li class="page-item"><a class="page-link"
+                                         href="?page={{ page.next_page_number }}">></a></li>
+                <li class="page-item"><a class="page-link" href="?page={{ page.paginator.num_pages }}">&raquo;</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'admin/inc/base.html' %}
+{% load static %}
+{% block title %} HelpBazar | Admin List {% endblock title %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <h2 class="content-title">All Admin</h2>
+    </div>
+    {% if messages %}
+        {% for m in messages %}
+            <div class="alert {{m.tags}}" id="alertMessage">
+                <strong>{{ m }}</strong>
+            </div>
+        {% endfor %}
+    {% endif %}
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="customerTable">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Image</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Active</th>
+                            <th scope="col">Verified</th>
+                            <th scope="col">Last Login</th>
+                            <th scope="col">Login Time</th>
+                            <th scope="col">IP Address</th>
+                            <th scope="col" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for c in admins %}
+
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>
+                                    <img class="rounded-circle" src="{{ c.profile.image.url }}" height="50" width="50">
+                                </td>
+                                <td>
+                                    {% if c.profile.full_name %}
+                                    {{ c.profile.full_name }}
+                                    {% else %}
+                                    -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if c.email %}
+                                    {{ c.email }}
+                                    {% else %}
+                                    -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if c.phone %}
+                                    {{ c.phone }}
+                                    {% else %}
+                                    -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if c.is_online == True %}
+                                    <i class="icon material-icons md-check_circle_outline" style="color:green;"></i>
+                                    {% else %}
+                                    <i class="icon material-icons md-highlight_off" style="color:red;"></i>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if c.is_active == True %}
+                                    <i class="icon material-icons md-check_circle_outline" style="color:green;"></i>
+                                    {% else %}
+                                    <i class="icon material-icons md-highlight_off" style="color:red;"></i>
+                                    {% endif %}
+                                </td>
+                                <td>{{ c.last_login | date:'M. j, Y' }}</td>
+                                <td>{{ c.last_login | date:'H:i A' }}</td>
+                                <td>{{ c.ip }}</td>
+                                <td class="text-center">
+                                    {% if request.user.user_type == 'developer'%}
+                                        <a href="#" class="btn btn-outline-primary rounded">
+                                            <i class="material-icons md-edit"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if c.is_active == True %}
+                                        <a href="{% url 'deactivate_staff' c.id %}" class="btn btn-danger rounded">
+                                            <i class="material-icons md-delete_forever"></i>
+                                        </a>
+                                    {% else %}
+                                        {% if request.user.user_type == 'developer' or 'admin' %}
+                                            <a href="{% url 'activate_staff' c.id %}" class="btn btn-success rounded">
+                                                <i class="material-icons md-restore"></i>
+                                            </a>
+                                        {% else %}
+                                            Inactive
+                                        {% endif %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

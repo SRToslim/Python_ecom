@@ -1,0 +1,247 @@
+{% extends 'admin/inc/base.html' %}
+{% load static %}
+{% block title %}HelpBazar | Order Details {% endblock %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Order detail</h2>
+            <p>Details for Order ID: {{ order.code }}</p>
+        </div>
+    </div>
+    <div class="card">
+        <header class="card-header">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-4 mb-lg-0 mb-15">
+                    <span> <i class="material-icons md-calendar_today"></i> <b>{{ order.order_date }}</b> </span> <br />
+                    <small class="text-muted">Order ID: {{ order.code }}</small>
+                </div>
+                <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                    <form method="POST" action="{% url 'order_details' order.id %}">
+                        {% csrf_token %}
+                        <select class="form-select d-inline-block mb-lg-0 mr-5 mw-200" name="status">
+                            <option value="{{ order.delivery_status }}">{{ order.delivery_status }}</option>
+                            <option value="Pending">Pending</option>
+                            <option value="In Review">In Review</option>
+                            <option value="Confirmed">Confirmed</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </header>
+        <!-- card-header end// -->
+        <div class="card-body">
+            <div class="row mb-50 mt-20 order-info-wrap">
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-person"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Customer</h6>
+                            <p class="mb-1">
+                                {{ order.user.profile.full_name }} <br />
+                                {{ order.user.email }} <br />
+                                {{ order.user.phone }}
+                            </p>
+                            <a href="#">View profile</a>
+                        </div>
+                    </article>
+                </div>
+                <!-- col// -->
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-local_shipping"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Order info</h6>
+                            <p class="mb-1">
+                                Pay method: {{ order.payment_method }} <br />
+                                Pay status: {{ order.payment_status }}<br />
+                                Order Status: {{ order.delivery_status }}
+                            </p>
+                            <a href="#">Download info</a>
+                        </div>
+                    </article>
+                </div>
+                <!-- col// -->
+                <div class="col-md-4">
+                    <article class="icontext align-items-start">
+                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                            <i class="text-primary material-icons md-place"></i>
+                        </span>
+                        <div class="text">
+                            <h6 class="mb-1">Deliver to</h6>
+                            <p class="mb-1">
+                                {{ order.shipping_address.billing_address }} <br />
+                                {{ order.shipping_address.city }} - {{ order.shipping_address.zipcode }},<br />
+                                {{ order.shipping_address.country }}
+                            </p>
+                            <a href="#">View profile</a>
+                        </div>
+                    </article>
+                </div>
+                <!-- col// -->
+            </div>
+            <!-- row // -->
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="40%">Product</th>
+                                    <th width="20%">Unit Price</th>
+                                    <th width="20%">Quantity</th>
+                                    <th width="20%" class="text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in order_item %}
+                                <tr>
+                                    <td>
+                                        <a class="itemside" href="#">
+                                            <div class="left">
+                                                <img src="{{ item.product.image.url }}" width="40" height="40" class="img-xs" alt="Item" />
+                                            </div>
+                                            <div class="info">
+                                                {{ item.product.name }} <br />
+                                                <span class="text-muted" style="font-size:12px;">SKU: {{ item.product.sku }}</span>
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {% for c in currencies %}
+                                            {{ c.symbol }}
+                                        {% endfor %}
+                                        {{ item.product.price }}
+                                    </td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td class="text-end">
+                                        {% for c in currencies %}
+                                            {{ c.symbol }}
+                                        {% endfor %}
+                                        {% widthratio item.product.price 1 item.quantity %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td colspan="4">
+                                        <article class="float-end">
+                                            <dl class="dlist">
+                                                <dt>Subtotal:</dt>
+                                                <dd>
+                                                    {% for c in currencies %}
+                                                        {{ c.symbol }}
+                                                    {% endfor %}
+                                                    {{ order.total_price }}
+                                                </dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Discount:</dt>
+                                                <dd>
+                                                    {% for c in currencies %}
+                                                        {{ c.symbol }}
+                                                    {% endfor %}
+                                                    {% if order.coupon_discount %}
+                                                        {{ order.coupon_discount }}
+                                                    {% else %}
+                                                    0
+                                                    {% endif %}
+                                                </dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Tax/Vat:</dt>
+                                                <dd>
+                                                    {% for c in currencies %}
+                                                        {{ c.symbol }}
+                                                    {% endfor %}
+                                                    {{ order.total_tax }}
+                                                </dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Shipping cost:</dt>
+                                                <dd>
+                                                    {% for c in currencies %}
+                                                        {{ c.symbol }}
+                                                    {% endfor %}
+                                                    10.00
+                                                </dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt>Grand total:</dt>
+                                                <dd>
+                                                    <b class="h5">
+                                                    {% for c in currencies %}
+                                                        {{ c.symbol }}
+                                                    {% endfor %}
+                                                    {{ order.grand_total }}
+                                                    </b>
+                                                </dd>
+                                            </dl>
+                                            <dl class="dlist">
+                                                <dt class="text-muted">Status:</dt>
+                                                <dd>
+                                                    {% if order.payment_status == 'Paid' %}
+                                                    <span class="badge rounded-pill alert-success text-success">Payment done</span>
+                                                    {% else %}
+                                                    <span class="badge rounded-pill alert-warning text-warning">Payment due</span>
+                                                    {% endif %}
+                                                </dd>
+                                            </dl>
+                                        </article>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- table-responsive// -->
+                </div>
+                <!-- col// -->
+                <div class="col-lg-1"></div>
+
+                <div class="col-lg-4">
+                    <div class="box shadow-sm bg-light">
+                        <h6 class="mb-15">Payment info</h6>
+                        {% if order.payment_method == 'SSLCOMMERZE' %}
+                            <p class="tm_m0">Payment method: {{ order.payment_method }}</p>
+                            <p class="tm_m0">Payment status: {{ order.payment_status }}</p>
+                        {% elif order.payment_method == 'bKash' %}
+                            <p class="tm_m0">Payment method: {{ order.payment_method }}</p>
+                            <p class="tm_m0">Payment status: {{ order.payment_status }}</p>
+                        {% elif order.payment_method == 'Nagad' %}
+                            <p class="tm_m0">Payment method: {{ order.payment_method }}</p>
+                            <p class="tm_m0">Payment status: {{ order.payment_status }}</p>
+                        {% else %}
+                            <p class="tm_m0">Payment method: {{ order.payment_method }}</p>
+                            <p class="tm_m0">Payment status: {{ order.payment_status }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="h-25 pt-4">
+                        <div class="mb-3">
+                            <label>Additional Information</label>
+                            <textarea class="form-control" name="notes" id="notes" placeholder="Type some note">{{ order.note }}</textarea>
+                        </div>
+                        <button onclick="printInvoice()" class="btn btn-secondary print ms-2" >
+                            <i class="icon material-icons md-print"></i> Print Invoice
+                        </button>
+                    </div>
+                    <script>
+                        function printInvoice() {
+                            window.print();
+                        }
+                    </script>
+                </div>
+                <!-- col// -->
+            </div>
+        </div>
+        <!-- card-body end// -->
+    </div>
+    <!-- card end// -->
+</section>
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends 'admin/inc/base.html' %}
+{% load static %}
+{% block title %} {% endblock %}
+{% block content %}
+<section class="content-main">
+    <div class="content-header">
+        <div>
+            <h2 class="content-title card-title">Update Category</h2>
+            <p>Add a category</p>
+        </div>
+        <div>
+            <a class="btn btn-primary" href="{% url 'categories_add_view' %}">
+                <i class="text-muted material-icons md-arrow_back"></i>Back to Category
+            </a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Category Name</label>
+                                    {{ form.title }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Featured Category</label>
+                                    {{ form.featured }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Category Icon</label>
+                                    {{ form.icon }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Category Image</label>
+                                    {{ form.image }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Category Banner</label>
+                                    {{ form.banner }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-4">
+                                    <label class="form-label">Category Status</label>
+                                    {{ form.status }}
+                                </div>
+                            </div>
+                        </div>
+                        {{form.media}}
+                        <div class="form-group">
+                            <button class="btn btn-primary">Update category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- .row // -->
+        </div>
+        <!-- card body .// -->
+    </div>
+    <!-- card .// -->
+</section>
+{% endblock %}

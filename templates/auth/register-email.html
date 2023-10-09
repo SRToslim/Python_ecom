@@ -1,0 +1,36 @@
+{% extends 'inc/base.html' %}
+{% load static %}
+
+{% block title %} Mail Sent {% endblock title %}
+
+{% block content %}
+<main class="main pages mail-success section">
+    <div class="page-content pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-8 col-lg-10 col-md-12 m-auto">
+                    {% if messages %}
+                    {% for m in messages %}
+                    <div class="alert {{m.tags}}" id="alertMessage">
+                        <strong>{{ m }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                    <div class="col-lg-6 offset-lg-3 col-12">
+                        <!-- Error Inner -->
+                        <div class="success-inner">
+                            <h1><i class="fa fa-envelope"></i><span>Mail Sent Successfully!</span></h1>
+                            <p>
+                                Dear <strong>{{ name|capfirst }}</strong>, An activation mail successfully sent to {{
+                                email }}, please check your email inbox, including the spam folder, for an activation
+                                link to confirm and complete the registration. <br> <strong>Note:</strong> Check your spam folder.
+                            </p>
+                        </div>
+                        <!--/ End Error Inner -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

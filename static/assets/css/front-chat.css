@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+.chat_button{
+    border: 2px solid #77E;
+    position: fixed;
+    bottom: 50px;
+    right: 0;
+    margin: 20px 20px;
+    height: 80px;
+    width: 80px;
+    text-align:center;
+    background-color: #Eff;
+    border-radius: 100px;
+    font-size: 1.6rem;
+    color: #77E;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+}
+
+.chat_button:hover {
+    border: 2px solid #Eff;
+    background-color: #77E;
+    color: #eff;
+}
+
+
+.chat_button:focus , .chat_button:active{
+    outline: none;
+
+}
+
+
+.chat_box {
+    max-height: 100%;
+    max-width: 100%;
+    height: 500px;
+    width: 350px;
+    background-color: #fff;
+    position: fixed;
+    bottom: 100px;
+    right: 100px;
+    display:none;
+    border-radius: 15px;
+    background-image: url(https://i.pinimg.com/originals/40/39/e0/4039e0f1ef08b7b965bacb4641a7af49.jpg);
+    box-shadow: 0 0 50px rgba(0,0,0,.45);
+}
+
+
+.chat_box_header{
+    width:100%;
+    padding: 20px;
+    background: #e1e3e8;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.chat_box_header img{
+    border-radius: 50%;
+    height: 35px;
+    margin-left: -14px;
+    float:left
+}
+.chat_box_header p{
+    text-align:center;
+    color: #77E;
+    font-weight: 600;
+    letter-spacing: .25rem;
+}
+
+.chat_box_body {
+    padding: 16px;
+    overflow-y:scroll;
+    height: 388px;
+    scroll-behavior: smooth;
+}
+
+.chat_box_footer {
+    max-width: 100%;
+    height: 80px;
+    position: absolute;
+    bottom: -31px;
+}
+
+#MsgInput {
+    max-width:100%;
+    width: 300px;
+    height: 50px !important;
+    padding: 17px 15px;
+    border-radius: 0 0 0 10px !important;
+    border: none;
+    position: fixed;
+    background-color: #eee;
+}
+
+.sendBtn {
+    position: absolute;
+    bottom: 30px;
+    font-size: 1.4rem;
+    background: white;
+    box-shadow: none;
+    border: none;
+    border-bottom-right-radius: 16px;
+    color: #5A5EB9;
+    padding: 13px 15px;
+    left: 300px;
+}
+
+.toggle{
+    display: block;
+}
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 10%, 0);
+        transform: translate3d(0, 10%, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+.fadeInUp {
+    -webkit-animation-name: fadeInUp;
+    animation-name: fadeInUp;
+}
+
+@media only screen and (max-width: 420px) {
+    #chatbar {
+        width: 100%;
+        position: absolute;
+        left: 0;
+        bottom: 8rem;
+    }
+
+    .chat_box_footer input {
+        width: 100%;
+    }
+
+    .chat_box_footer button {
+        width: 30%;
+        right: 0
+    }
+}

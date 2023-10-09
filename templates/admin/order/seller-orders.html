@@ -1,0 +1,122 @@
+{% extends 'admin/inc/base.html' %}
+{% load static %}
+{% block title %}HelpBazar | Category{% endblock %}
+{% block content %}
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Seller Order</h2>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row gx-3">
+                    <div class="col-lg-4 col-md-6 me-auto">
+                        <input type="text" placeholder="Search..." class="form-control" />
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>Status</option>
+                            <option>Active</option>
+                            <option>Disabled</option>
+                            <option>Show all</option>
+                        </select>
+                    </div>
+                    <div class="col-lg-2 col-6 col-md-3">
+                        <select class="form-select">
+                            <option>Show 20</option>
+                            <option>Show 30</option>
+                            <option>Show 40</option>
+                        </select>
+                    </div>
+                </div>
+            </header>
+            <!-- card-header end// -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Invoice</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Phone</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Delivery</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Time</th>
+                                <th scope="col" class="text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in page %}
+                            <tr>
+                                <td><a href="{% url 'order_details' order.id %}" >{{ order.code }}</a></td>
+                                <td><b>{{ order.user.profile.full_name }}</b></td>
+                                <td>{{ order.user.phone }}</td>
+                                <td>৳{{ order.grand_total }}</td>
+                                <td>{{ order.payment_method }}</td>
+                                <td>
+                                    {% if order.payment_status == 'Paid' %}
+                                    <span class="badge rounded-pill alert-success">Paid</span>
+                                    {% else %}
+                                    <span class="badge rounded-pill alert-warning">Unpaid</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if order.delivery_status == 'Pending' %}
+                                    <span class="badge rounded-pill alert-warning">Pending</span>
+                                    {% elif order.delivery_status == 'In Review' %}
+                                    <span class="badge rounded-pill alert-info">In Review</span>
+                                    {% elif order.delivery_status == 'Confirmed' %}
+                                    <span class="badge rounded-pill alert-secondary">Confirmed</span>
+                                    {% elif order.delivery_status == 'Processing' %}
+                                    <span class="badge rounded-pill alert-warning">Processing</span>
+                                    {% elif order.delivery_status == 'Shipped' %}
+                                    <span class="badge rounded-pill alert-info">Shipped</span>
+                                    {% else %}
+                                    <span class="badge rounded-pill alert-success">Delivered</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ order.order_date | date:'M. j, Y' }}</td>
+                                <td>{{ order.order_date | date:'h:i A' }}</td>
+                                <td class="text-end">
+                                    <a href="{% url 'order_details' order.id %}" class="btn btn-md rounded font-sm"><i class="material-icons md-visibility"></i> </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- table-responsive //end -->
+            </div>
+            <!-- card-body end// -->
+        </div>
+        <!-- card end// -->
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if page.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}"><</a>
+                    </li>
+                    {% endif %}
+
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page.number }}">{{ page.number }}</a>
+                    </li>
+
+                    {% if page.has_next %}
+                    <li class="page-item"><a class="page-link"
+                                             href="?page={{ page.next_page_number }}">></a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page.paginator.num_pages }}">&raquo;</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </section>
+
+{% endblock %}

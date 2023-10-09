@@ -1,0 +1,134 @@
+﻿{% extends 'inc/base.html' %}
+{% load static %}
+{% load active_link_tags %}
+{% block title %} Lavender Online Grocery Shop in Dhaka City {% endblock title %}
+{% block content %}
+<main class="main pages">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                <span></span> Pages <span></span> My Account
+            </div>
+        </div>
+    </div>
+    <div class="page-content pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        {% include 'customer/sidebar.html' %}
+                        <div class="col-md-9">
+                            <div class="pl-50">
+                                <div class="card shadow-none rounded-0 border">
+                                    <div class="card-header border-bottom-0">
+                                        <h5 class="mb-0 fs-20 fw-700 text-dark">Purchase History</h5>
+                                    </div>
+                                    <div class="">
+                                        <table class="table aiz-table mb-0 footable footable-1 breakpoint breakpoint-xs" style="">
+                                            <thead class="text-gray fs-12">
+                                                <tr class="footable-header" style="text-align:center">
+                                                    <th>Order Code</th>
+                                                    <th>Order Date</th>
+                                                    <th>Order Time</th>
+                                                    <th>Total Amount</th>
+                                                    <th>Delivery Status</th>
+                                                    <th>Payment Status</th>
+                                                    <th>Options</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="fs-14">
+                                                {% for order in page %}
+                                                <tr style="text-align:center">
+                                                    <td class="pl-0 footable-first-visible">
+                                                        <span class="footable-toggle fooicon fooicon-plus"></span>
+                                                        <a href="{% url 'orderDetails' order.id %}" target="_blank">{{ order.code }}</a>
+                                                    </td>
+                                                    <td class="text-secondary" >{{ order.order_date|date:'M. j, Y' }}</td>
+                                                    <td class="text-secondary" >{{ order.order_date|date:'H:i A' }}</td>
+                                                    <td class="fw-700">
+                                                        {% for c in currencies %}
+                                                            {{ c.symbol }}
+                                                        {% endfor %}
+                                                        {{ order.grand_total }}
+                                                    </td>
+                                                    <td class="fw-700">
+                                                        {% if order.delivery_status == 'Pending' %}
+                                                        <span class="badge rounded-pill alert-warning">Pending</span>
+                                                        {% elif order.delivery_status == 'In Review' %}
+                                                        <span class="badge rounded-pill alert-info">In Review</span>
+                                                        {% elif order.delivery_status == 'Confirmed' %}
+                                                        <span class="badge rounded-pill alert-secondary">Confirmed</span>
+                                                        {% elif order.delivery_status == 'Processing' %}
+                                                        <span class="badge rounded-pill alert-warning">Processing</span>
+                                                        {% elif order.delivery_status == 'Shipped' %}
+                                                        <span class="badge rounded-pill alert-info">Shipped</span>
+                                                        {% else %}
+                                                        <span class="badge rounded-pill alert-success">Delivered</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if order.payment_status == 'Unpaid' %}
+                                                        <span class="badge bg-warning p-3 fs-12"
+                                                              style="border-radius: 25px; min-width: 80px !important;">Unpaid</span>
+                                                        {% else %}
+                                                        <span class="badge bg-success p-3 fs-12"
+                                                              style="border-radius: 25px; min-width: 80px !important;">Paid</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td class="text-right pr-0 footable-last-visible">
+                                                        <a class="btn btn-soft-warning btn-icon btn-circle btn-sm hov-svg-white"
+                                                           href="{% url 'orderDetails' order.id %}" title="Download Invoice" target="_blank">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="12"
+                                                                 height="12.001" viewBox="0 0 12 12.001">
+                                                                <g id="Group_24807" data-name="Group 24807"
+                                                                   transform="translate(-1341 -424.999)">
+                                                                    <path id="Union_17" data-name="Union 17"
+                                                                          d="M13936.389,851.5l.707-.707,2.355,2.355V846h1v7.1l2.306-2.306.707.707-3.538,3.538Z"
+                                                                          transform="translate(-12592.95 -421)"
+                                                                          fill="#f3af3d"></path>
+                                                                    <rect id="Rectangle_18661" data-name="Rectangle 18661"
+                                                                          width="12" height="1"
+                                                                          transform="translate(1341 436)"
+                                                                          fill="#f3af3d"></rect>
+                                                                </g>
+                                                            </svg>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pagination-area mt-15 mb-50">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
+                                        {% if page.has_previous %}
+                                        <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                                        <li class="page-item"><a class="page-link" href="?page={{ page.previous_page_number }}"><</a>
+                                        </li>
+                                        {% endif %}
+
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page.number }}">{{ page.number }}</a>
+                                        </li>
+
+                                        {% if page.has_next %}
+                                        <li class="page-item"><a class="page-link"
+                                                                 href="?page={{ page.next_page_number }}">></a></li>
+                                        <li class="page-item"><a class="page-link" href="?page={{ page.paginator.num_pages }}">&raquo;</a>
+                                        </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

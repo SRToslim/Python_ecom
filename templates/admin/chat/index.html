@@ -1,0 +1,222 @@
+{% extends 'admin/inc/base.html' %}
+{% load static %}
+{% block title %} HelpBazar | Customers {% endblock title %}
+{% block custom-style %}
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">-->
+    <link rel="stylesheet" href="{% static 'assets/css/chat.css' %}" />
+{% endblock %}
+{% block content %}
+<section class="content-main">
+    <div class="chat-container">
+        <div class="row no-gutters">
+            <div style="padding-right:0px" class="col-md-4 border-right">
+                <div class="settings-tray">
+                    <img class="profile-image" src="{{ user.profile.image.url }}" alt="Profile img">
+                    <span class="settings-tray--right">
+                        <i class="material-icons md-cached"></i>
+                        <i class="material-icons md-message"></i>
+                        <i class="material-icons md-menu"></i>
+                    </span>
+                </div>
+                <div class="search-box">
+                    <div class="input-wrapper">
+                        <i class="material-icons md-search"></i>
+                        <input placeholder="Search here" type="text" id="user-search">
+                    </div>
+                </div>
+                <div class="user-scroll" id="search-results">
+                    {% for customer in customers %}
+                    <div class="friend-drawer friend-drawer--onhover" data-userId="{{ customer.id }}" >
+                        <img class="profile-image" src="{{ customer.profile.image.url }}" alt="">
+                        <div class="text">
+                            <h6>{{ customer.profile.full_name }} <br />
+                                <span class="time text-muted small">{{ customer.username }}</span>
+                            </h6>
+                            <p class="text-muted">Hey, you're arrested!</p>
+                        </div>
+                        <span class="time text-muted small">13:21</span>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                </div>
+
+            </div>
+            <div style="padding-left:0px;border-left: 1px solid #e9e9e9;" class="col-md-8">
+                <div class="settings-tray">
+                    <div class="friend-drawer no-gutters friend-drawer--grey">
+                        <img class="profile-image" src="https://www.clarity-enhanced.net/wp-content/uploads/2020/06/robocop.jpg" alt="">
+                        <div class="text">
+                            <h6>Robo Cop</h6>
+                            <p class="text-muted">Layin' down the law since like before Christ...</p>
+                        </div>
+                        <span class="settings-tray--right">
+                            <i class="material-icons md-cached"></i>
+                            <i class="material-icons md-message"></i>
+                            <i class="material-icons md-menu"></i>
+                        </span>
+                    </div>
+                </div>
+                <div class="chat-panel">
+                    <div class="chat-text">
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3 offset-md-9">
+                                <div class="chat-bubble chat-bubble--right">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3 offset-md-9">
+                                <div class="chat-bubble chat-bubble--right">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3">
+                                <div class="chat-bubble chat-bubble--left">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters">
+                            <div class="col-md-3 offset-md-9">
+                                <div class="chat-bubble chat-bubble--right">
+                                    Hello dude!
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="chat-box-tray">
+                                <i class="material-icons md-sentiment_very_satisfied"></i>
+                                <input id="text" type="text" placeholder="Type your message here...">
+                                <i class="material-icons md-mic"></i>
+                                <i class="material-icons md-send"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}
+
+{% block custom-js %}
+<script>
+$( '.friend-drawer--onhover' ).on( 'click',  function() {
+    $( '.chat-bubble' ).hide('slow').show('slow');
+});
+
+<!--$(document).ready(function() {-->
+<!--    $('#user-search').on('input', function() {-->
+<!--        var query = $(this).val();-->
+<!--        console.log('Search query:', query);-->
+<!--        $.ajax({-->
+<!--            url: '/user/chat-user-search/',-->
+<!--            data: {'q': query},-->
+<!--            dataType: 'json',-->
+<!--            success: function(data) {-->
+<!--                console.log('Received data:', data);-->
+<!--                var resultsDiv = $('#search-results');-->
+<!--                resultsDiv.empty();-->
+<!--                $.each(data.results, function(index, result) {-->
+<!--                    resultsDiv.append('<p><a href="/user/chat/' + result.id + '">' + result.name + '</a></p>');-->
+<!--                });-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--});-->
+
+$(document).ready(function(){
+    $('#user-search').on('keyup', function(){
+        var value = $(this).val();
+        var url = '/user/chat-user-search/'+value;
+        $.ajax({
+            method:'get',
+            url:url,
+            cache:false,
+            contentType:false,
+            processData:false,
+        }).done(function(data){
+            console.log(data);
+        }).fail(function(data){
+            alert('ee');
+            console.log(data);
+        })
+    });
+
+
+
+    $('.friend-drawer').on('click', function(){
+        var id = $(this).attr('data-userId');
+
+    });
+});
+</script>
+{% endblock %}

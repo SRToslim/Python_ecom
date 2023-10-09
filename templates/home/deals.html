@@ -1,0 +1,321 @@
+{% extends 'inc/base.html' %}
+
+{% load static %}
+
+{% block title %} HelpBazar | Product {% endblock title %}
+
+{% block content %}
+<main class="main">
+    <div class="page-header mt-30 mb-50">
+        <div class="container">
+            <div class="archive-header">
+                <div class="row align-items-center">
+                    <div class="col-xl-3">
+                        <h1 class="mb-15">Offer Product</h1>
+                        <div class="breadcrumb">
+                            <a href="{% url 'index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                            <span></span> Offer Products
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container mb-30">
+        <div class="row flex-row-reverse">
+            <div class="col-lg-4-5">
+                <div class="shop-product-fillter">
+                    <div class="totall-product">
+                        <p>We found <strong class="text-brand">{{ products.count }}</strong> item{{ products.count | pluralize }} for you!</p>
+                    </div>
+                    <div class="sort-by-product-area">
+                        <div class="sort-by-cover mr-10">
+                            <div class="sort-by-product-wrap">
+                                <div class="sort-by">
+                                    <span><i class="fi-rs-apps"></i>Show:</span>
+                                </div>
+                                <div class="sort-by-dropdown-wrap">
+                                    <span> 50 <i class="fi-rs-angle-small-down"></i></span>
+                                </div>
+                            </div>
+                            <div class="sort-by-dropdown">
+                                <ul>
+                                    <li><a class="active" href="#">50</a></li>
+                                    <li><a href="#">100</a></li>
+                                    <li><a href="#">150</a></li>
+                                    <li><a href="#">200</a></li>
+                                    <li><a href="#">All</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="sort-by-cover">
+                            <div class="sort-by-product-wrap">
+                                <div class="sort-by">
+                                    <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
+                                </div>
+                                <div class="sort-by-dropdown-wrap">
+                                    <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                </div>
+                            </div>
+                            <div class="sort-by-dropdown">
+                                <ul>
+                                    <li><a class="active" href="#">Featured</a></li>
+                                    <li><a href="#">Price: Low to High</a></li>
+                                    <li><a href="#">Price: High to Low</a></li>
+                                    <li><a href="#">Release Date</a></li>
+                                    <li><a href="#">Avg. Rating</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row product-grid">
+                    {% for product in page %}
+                    {% if product.offer or product.old_price %}
+                    <div class="col-lg-1-5 col-md-4 col-12 col-sm-6">
+                        <div class="product-cart-wrap mb-30">
+                            <div class="product-img-action-wrap">
+                                <div class="product-img product-img-zoom">
+                                    <a href="{% url 'product_details' product.slug %}">
+                                        <img class="default-img" src="{{ product.image.url }}" alt=""/>
+                                        {% if product.hover_image %}
+                                        <img class="hover-img" src="{{ product.hover_image.url }}" alt=""/>
+                                        {% endif %}
+                                    </a>
+                                </div>
+                                <div class="product-action-1">
+                                    <a aria-label="Add To Wishlist" class="action-btn" href="{% url 'add_to_wishlist' product.id %}"><i class="fi-rs-heart"></i></a>
+                                    <a aria-label="Compare" class="action-btn" href="#"><i class="fi-rs-shuffle"></i></a>
+                                    <a aria-label="Details" class="action-btn" href="{% url 'product_details' product.slug %}"><i class="fi-rs-eye"></i></a>
+                                </div>
+                                {% if product.sale_price %}
+                                <div class="">
+                                    {% if product.discount == 'flat' %}
+                                    <span class="hot" style="
+                                        background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                        border-radius: 0;
+                                        color: #fff;
+                                        font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                        font-size: 17px;
+                                        line-height: 25px;
+                                        height: 80px;
+                                        padding: 15px;
+                                        position: absolute;
+                                        right: 2px;
+                                        text-align: center;
+                                        text-transform: capitalize;
+                                        top: 0;
+                                        z-index: 2;
+                                        width: 80px;">Tk {{ product.sale_price|floatformat:0 }} Off
+                                    </span>
+                                    {% else %}
+                                    <span class="hot" style="
+                                        background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                        border-radius: 0;
+                                        color: #fff;
+                                        font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                        font-size: 17px;
+                                        line-height: 25px;
+                                        height: 80px;
+                                        padding: 15px;
+                                        position: absolute;
+                                        right: 2px;
+                                        text-align: center;
+                                        text-transform: capitalize;
+                                        top: 0;
+                                        z-index: 2;
+                                        width: 80px;">{{ product.sale_price|floatformat:0 }} % Off
+                                    </span>
+                                    {% endif %}
+                                </div>
+                                {% elif product.offer == 'buy1get1' %}
+                                <div class="">
+                                    <span class="hot" style="
+                                        background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                        border-radius: 0;
+                                        color: #fff;
+                                        font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                        font-size: 17px;
+                                        line-height: 25px;
+                                        height: 80px;
+                                        padding: 15px;
+                                        position: absolute;
+                                        right: 2px;
+                                        text-align: center;
+                                        text-transform: capitalize;
+                                        top: 0;
+                                        z-index: 2;
+                                        width: 80px;">Buy 1 <br> Get 1
+                                    </span>
+                                </div>
+                                {% elif product.offer == 'today_deal' %}
+                                <div class="">
+                                    <span class="hot" style="
+                                        background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                        border-radius: 0;
+                                        color: #fff;
+                                        font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                        font-size: 17px;
+                                        line-height: 25px;
+                                        height: 80px;
+                                        padding: 15px;
+                                        position: absolute;
+                                        right: 2px;
+                                        text-align: center;
+                                        text-transform: capitalize;
+                                        top: 0;
+                                        z-index: 2;
+                                        width: 80px;">Today's<br>Deal
+                                    </span>
+                                </div>
+                                {% elif product.offer == 'Savings' %}
+                                <div class="">
+                                    <span class="hot" style="
+                                        background: url({% static 'offers-bg.webp' %}) no-repeat scroll 0 0/100% 100%;
+                                        border-radius: 0;
+                                        color: #fff;
+                                        font-family: HelveticaNeue-CondensedBold, Helvetica Neue;
+                                        font-size: 17px;
+                                        line-height: 25px;
+                                        height: 80px;
+                                        padding: 15px;
+                                        position: absolute;
+                                        right: 2px;
+                                        text-align: center;
+                                        text-transform: capitalize;
+                                        top: 0;
+                                        z-index: 2;
+                                        width: 80px;">Grate<br>Saving
+                                    </span>
+                                </div>
+                                {% else %}
+
+                                {% endif %}
+                            </div>
+                            <div class="product-content-wrap">
+                                <div class="product-category">
+                                    <a href="{% url 'category_product_list' product.category.slug %}">{{ product.category.title }}</a>
+                                </div>
+                                <h2><a href="{% url 'product_details' product.slug %}">{{ product.name|truncatechars:20 }}</a></h2>
+                                <div class="product-rate-cover">
+                                    <span class="font-small ml-5 text-muted"> {{ product.reviews.count }} review{{ product.reviews.count|pluralize }}</span>
+                                </div>
+                                <div>
+                                    {% if i.vendor %}
+                                    <span class="font-small text-muted">By
+                                        <a href="{% url 'home_vendor_details' product.vendor.slug %}">{{ product.vendor.title }}</a>
+                                    </span>
+                                    {% elif i.brand %}
+                                    <span class="font-small text-muted">Brand:
+                                        <a href="{% url 'brand_product_list' product.brand.slug %}">{{ product.brand.title }}</a>
+                                    </span>
+                                    {% else %}
+                                    <br>
+                                    {% endif %}
+                                </div>
+                                <div class="product-card-bottom">
+                                    <div class="product-price">
+                                        {% for c in currencies %}
+                                            {% if c.is_active == True %}
+                                                <span>{{ c.symbol }}</span>
+                                            {% endif %}
+                                            <span class="current-product-price">{{ product.price }}</span><br>
+                                            {% if product.old_price %}
+                                            <span class="old-price">
+                                                {% if c.is_active == True %}
+                                                    {{ c.symbol }}
+                                                {% endif %}
+                                                {{ product.old_price }}</span>
+                                            {% else %}
+                                            <br>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                    <div class="add-cart">
+                                        {% if product.qty == 0 %}
+                                        <a class="add disabled_link" href="{% url 'add_to_cart' product.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        {% else %}
+                                        <a class="add" href="{% url 'add_to_cart' product.id %}"><i class="fi-rs-shopping-cart mr-5"></i>Add </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                <!--product grid-->
+                <div class="pagination-area">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page.previous_page_number }}"><</a>
+                            </li>
+                            {% endif %}
+
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page.number }}">{{ page.number }}</a>
+                            </li>
+
+                            {% if page.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page.next_page_number }}">></a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page.paginator.num_pages }}">&raquo;</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                <!--End Deals-->
+            </div>
+            <div class="col-lg-1-5 primary-sidebar sticky-sidebar">
+                <!-- Fillter By Price -->
+                <div class="sidebar-widget price_range range mb-30">
+                    <h5 class="section-title style-1 mb-30">Fill by price</h5>
+                    <div class="price-filter">
+                        <div class="price-filter mb-20">
+                            <div class="price-filter-inner">
+                                <input type="range" id="range" class="slider-range" min="0" max="100" value="" oninput="">
+                                <div class="d-flex justify-content-between">
+                                    <div class="caption">From: <strong id="slider-range-value1" class="text-brand">৳</strong></div>
+                                    <div class="caption">To: <strong id="slider-range-value2" class="text-brand">৳</strong></div>
+                                </div>
+                                <input type="number" id="max_price" min="" max="" value="" placeholder="Current Price" onkeyup="" style="background: transparent !important;">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-sm btn-default"><i class="fi-rs-filter mr-5"></i>
+                        Fillter</button>
+                </div>
+                <!-- Product sidebar Widget -->
+                <div class="sidebar-widget product-sidebar mb-30 p-30 bg-grey border-radius-10">
+                    <h5 class="section-title style-1 mb-30">New products</h5>
+                    {% for product in new_products %}
+                    <div class="single-post clearfix">
+                        <div class="image">
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}"/>
+                        </div>
+                        <div class="content pt-10">
+                            <h5><a href="{% url 'product_details' product.slug %}">{{ product.name }}</a></h5>
+                            {% for c in currencies %}
+                            {% if c.is_active == True %}
+                            <p class="price mb-0 mt-5">{{ c.symbol }}{{ product.price }}</p>
+                            {% endif %}
+                            {% endfor %}
+                            <div class="">
+                                <span class="font-small ml-5 text-muted"> {{ product.reviews.count }} review{{ product.reviews.count|pluralize }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

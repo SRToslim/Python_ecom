@@ -1,0 +1,1 @@
+DASHBOARD_TEMPLATE_NAME = 'customer/dashboard.html'

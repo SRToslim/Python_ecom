@@ -1,0 +1,173 @@
+﻿{% extends 'inc/base.html' %}
+{% load static %}
+{% load active_link_tags %}
+{% block title %} HelpBazar {% endblock title %}
+{% block content %}
+<main class="main pages">
+    <div class="page-header breadcrumb-wrap">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="{% url 'index' %}" rel="nofollow"><i class="fi-rs-home mr-5"></i>Home</a>
+                <span></span> Pages <span></span> My Account
+            </div>
+        </div>
+    </div>
+    <div class="page-content pt-150 pb-150">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 m-auto">
+                    <div class="row">
+                        {% include 'customer/sidebar.html' %}
+                        <div class="col-md-9">
+                            <div class="">
+                                <div class="card" style="border: none !important;">
+                                    <div class="card-header" style="background: transparent !important;">
+                                        <h5>Account Details</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-3 text-center" style="border-right: 1px solid #ececec !important;">
+                                                <div class="image">
+                                                    <img src="{{ prof.image_url }}"
+                                                         class="rounded" height="200">
+                                                </div>
+                                            </div>
+                                            <div class="col-9">
+                                                <div class="ml-3 w-100">
+                                                    <h4 class="mb-0 mt-0">{{ user.profile.full_name }}</h4>
+                                                    <span>{{ user.phone }}</span>
+
+                                                    <div class="mt-2 d-flex justify-content-between rounded stats">
+                                                        <div class="d-flex flex-column">
+                                                            <table>
+                                                                <tr>
+                                                                    <td>Email:</td>
+                                                                    <td>{{ user.email }}</td>
+                                                                    <td>Membership No:</td>
+                                                                    <td>{{ user.membership_no }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Registered IP:</td>
+                                                                    <td>{{ user.ip }}</td>
+                                                                    <td>Last Login IP:</td>
+                                                                    <td>{{ user.last_ip }}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Active:</td>
+                                                                    <td>{{ active }}</td>
+                                                                    <td>Last Login:</td>
+                                                                    <td>{{ user.last_login }}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="account pl-50">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Edit Account</h5>
+                                        </div>
+                                        {% if messages %}
+                                            {% for m in messages %}
+                                                <div class="alert {{m.tags}}" id="alertMessage">
+                                                    <strong>{{ m }}</strong>
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+                                        <div class="card-body">
+                                            <form method="POST" enctype="multipart/form-data">
+                                                {% csrf_token %}
+                                                <div class="row">
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your Name</label>
+                                                        <input class="form-control" name="full_name" type="text"
+                                                               value="{{ user.profile.full_name }}"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your Phone</label>
+                                                        <input class="form-control" name="phone" type="text"
+                                                               value="{{ user.phone }}"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your Email Address</label>
+                                                        {% if user.email %}
+                                                        <input class="form-control" name="email" type="email"
+                                                               value="{{ user.email }}" readonly/>
+                                                        {% else %}
+                                                        <input class="form-control" name="email" type="email"
+                                                               value="{{ user.email }}"/>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your User Name</label>
+                                                        <input class="form-control" name="username" type="text"
+                                                               value="{{ user.username }}"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Date of Birth</label>
+                                                        <input class="form-control" name="dob" type="date"
+                                                               value="{{ prof.dob }}">
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your Membership No</label>
+                                                        <input class="form-control" name="membership_no" type="text"
+                                                               value="{{ user.membership_no }}" readonly/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Gender</label>
+                                                        <select class="form-control" name="gender">
+                                                            <option value="{{ prof.gender }}">{{ prof.gender }}</option>
+                                                            <option value="male">Male</option>
+                                                            <option value="female">Female</option>
+                                                            <option value="other">Other</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your Address</label>
+                                                        <input class="form-control" name="address" type="text"
+                                                               value="{{ user.profile.address }}"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your City</label>
+                                                        <input class="form-control" name="city" type="text"
+                                                               value="{{ user.profile.city }}"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your Zip</label>
+                                                        <input class="form-control" name="zipcode" type="text"
+                                                               value="{{ user.profile.zipcode }}"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Your Country</label>
+                                                        <input class="form-control" name="country" type="text"
+                                                               value="{{ user.profile.country }}"/>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label>Image</label>
+                                                        <input class="form-control" name="image" type="file" style="padding-top: 17px !important;"/>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <button type="submit"
+                                                                class="btn btn-fill-out submit font-weight-bold"
+                                                                name="submit" value="Submit">Save Change
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}
